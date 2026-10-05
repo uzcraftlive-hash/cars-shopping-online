@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Professional Car Shop - 500+ Real Models</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    body {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+      font-family: 'Segoe UI', sans-serif;
+      color: #fff;
+      min-height: 100vh;
+      padding: 10px;
+    }
+
+    .wrapper { max-width: 1600px; margin: 0 auto; }
+
+    .navbar {
+      background: rgba(15, 23, 42, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 15px 20px;
+      border-radius: 15px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+      position: sticky;
+      top: 10px;
+      z-index: 100;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .logo {
+      font-size: 28px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .search-container {
+      flex: 1;
+      min-width: 200px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .search-container input {
+      flex: 1;
+      padding: 10px 14px;
+      background: rgba(30, 41, 59, 0.5);
+      border: 1px solid rgba(100, 150, 200, 0.3);
+      border-radius: 10px;
+      color: #fff;
+      font-size: 13px;
+    }
+
+    .search-container input::placeholder { color: #64748b; }
+
+    .search-container button {
+      padding: 10px 16px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 13px;
+      transition: 0.3s;
+    }
+
+    .search-container button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .cart-btn {
+      position: relative;
+      font-size: 24px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .cart-btn:hover { transform: scale(1.1); }
+
+    .cart-badge {
+      position: absolute;
+      top: -8px;
+      right: -8px;
+      background: linear-gradient(135deg, #ff6b6b, #ee5a6f);
+      color: white;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .filters-section {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(10px);
+      padding: 15px;
+      border-radius: 15px;
+      margin-bottom: 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 10px;
+      border: 1px solid rgba(100, 150, 200, 0.2);
+    }
+
+    .filter-item {
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .filter-item label {
+      font-size: 11px;
+      text-transform: uppercase;
+      color: #64b5f6;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    .filter-item select, .filter-item input {
+      padding: 8px 10px;
+      background: rgba(15, 23, 42, 0.5);
+      border: 1px solid rgba(100, 150, 200, 0.3);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 12px;
+    }
+
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .product-card {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      overflow: hidden;
+      border: 1px solid rgba(100, 150, 200, 0.2);
+      transition: all 0.3s;
+    }
+
+    .product-card:hover {
+      transform: translateY(-6px);
+      border-color: rgba(102, 126, 234, 0.5);
+      box-shadow: 0 12px 30px rgba(102, 126, 234, 0.15);
+    }
+
+    .product-image {
+      width: 100%;
+      height: 150px;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .product-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    .product-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: rgba(255, 107, 107, 0.9);
+      padding: 4px 10px;
+      border-radius: 20px;
+      font-size: 10px;
+      font-weight: bold;
+    }
+
+    .product-body {
+      padding: 12px;
+    }
+
+    .product-brand {
+      font-size: 10px;
+      color: #64b5f6;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 3px;
+    }
+
+    .product-name {
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 4px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .product-details {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 6px;
+      line-height: 1.3;
+    }
+
+    .product-specs {
+      display: flex;
+      gap: 4px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      font-size: 10px;
+    }
+
+    .spec-tag {
+      background: rgba(102, 126, 234, 0.2);
+      padding: 3px 6px;
+      border-radius: 3px;
+      color: #64b5f6;
+    }
+
+    .product-price {
+      font-size: 18px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 10px;
+    }
+
+    .product-controls {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      border: 1px solid rgba(100, 150, 200, 0.2);
+    }
+
+    .qty-btn {
+      width: 24px;
+      height: 24px;
+      border: none;
+      background: transparent;
+      color: #64b5f6;
+      cursor: pointer;
+      font-weight: bold;
+      font-size: 14px;
+      transition: 0.2s;
+    }
+
+    .qty-btn:hover { color: #fff; }
+
+    .qty-display {
+      width: 30px;
+      text-align: center;
+      font-size: 12px;
+      font-weight: bold;
+    }
+
+    .add-btn {
+      flex: 1;
+      padding: 8px 10px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 11px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .add-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(102, 126, 234, 0.3);
+    }
+
+    .add-btn:active { transform: scale(0.95); }
+
+    .cart-modal {
+      position: fixed;
+      top: 0;
+      right: -100%;
+      width: 100%;
+      max-width: 420px;
+      height: 100vh;
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(10px);
+      border-left: 1px solid rgba(100, 150, 200, 0.2);
+      display: flex;
+      flex-direction: column;
+      z-index: 1000;
+      transition: right 0.3s ease;
+      box-shadow: -10px 0 40px rgba(0, 0, 0, 0.3);
+    }
+
+    .cart-modal.active { right: 0; }
+
+    .cart-header {
+      padding: 16px;
+      border-bottom: 1px solid rgba(100, 150, 200, 0.2);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .cart-header h2 {
+      font-size: 18px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .close-cart {
+      font-size: 22px;
+      cursor: pointer;
+      color: #64748b;
+      transition: 0.2s;
+    }
+
+    .close-cart:hover { color: #fff; }
+
+    .cart-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 12px;
+    }
+
+    .cart-item {
+      background: rgba(30, 41, 59, 0.5);
+      padding: 10px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      border: 1px solid rgba(100, 150, 200, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+    }
+
+    .cart-item-info { flex: 1; }
+    .cart-item-name { font-weight: bold; margin-bottom: 3px; }
+    .cart-item-detail { color: #94a3b8; font-size: 11px; margin-bottom: 3px; }
+    .cart-item-price { color: #64b5f6; font-weight: bold; }
+
+    .cart-item-remove {
+      background: rgba(255, 107, 107, 0.2);
+      color: #ff6b6b;
+      border: 1px solid rgba(255, 107, 107, 0.3);
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 11px;
+      font-weight: bold;
+      transition: 0.2s;
+    }
+
+    .cart-item-remove:hover { background: rgba(255, 107, 107, 0.3); }
+
+    .empty-cart {
+      text-align: center;
+      padding: 50px 20px;
+      color: #64748b;
+    }
+
+    .empty-cart-icon { font-size: 40px; margin-bottom: 10px; }
+
+    .cart-footer {
+      padding: 16px;
+      border-top: 1px solid rgba(100, 150, 200, 0.2);
+      background: rgba(30, 41, 59, 0.8);
+    }
+
+    .cart-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .cart-total-value {
+      font-size: 20px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .checkout-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .checkout-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .order-modal {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background: rgba(15, 23, 42, 0.98);
+      backdrop-filter: blur(10px);
+      padding: 35px 25px;
+      border-radius: 18px;
+      border: 1px solid rgba(100, 150, 200, 0.2);
+      text-align: center;
+      z-index: 2000;
+      max-width: 380px;
+      width: 90%;
+      max-height: 85vh;
+      overflow-y: auto;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+      transition: transform 0.3s;
+    }
+
+    .order-modal.show { transform: translate(-50%, -50%) scale(1); }
+
+    .order-modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: none;
+      z-index: 1500;
+    }
+
+    .order-modal-overlay.show { display: block; }
+
+    .order-icon { font-size: 42px; margin-bottom: 12px; }
+    .order-title {
+      font-size: 24px;
+      font-weight: 900;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #00ff88, #00dd77);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .order-text { color: #94a3b8; margin-bottom: 15px; font-size: 13px; line-height: 1.5; }
+
+    .order-items {
+      background: rgba(30, 41, 59, 0.5);
+      padding: 12px;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      text-align: left;
+      max-height: 180px;
+      overflow-y: auto;
+      border: 1px solid rgba(100, 150, 200, 0.1);
+      font-size: 12px;
+    }
+
+    .order-item-line {
+      padding: 6px 0;
+      border-bottom: 1px solid rgba(100, 150, 200, 0.1);
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .order-item-line:last-child { border-bottom: none; }
+
+    .order-price {
+      font-size: 22px;
+      font-weight: 900;
+      background: linear-gradient(135deg, #667eea, #764ba2);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 15px;
+    }
+
+    .order-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #00ff88, #00dd77);
+      border: none;
+      border-radius: 8px;
+      color: #000;
+      font-weight: bold;
+      font-size: 14px;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+
+    .order-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 20px rgba(0, 255, 136, 0.3);
+    }
+
+    @media (max-width: 768px) {
+      .products-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+      .cart-modal { max-width: 100%; }
+      .navbar { gap: 8px; }
+      .search-container { min-width: 150px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="wrapper">
+    <div class="navbar">
+      <div class="logo">🚗 CAR SHOP</div>
+      <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Qidirish...">
+        <button onclick="searchCars()">🔍</button>
+      </div>
+      <div class="cart-btn" onclick="toggleCart()">
+        🛒
+        <div class="cart-badge" id="cartCount">0</div>
+      </div>
+    </div>
+
+    <div class="filters-section">
+      <div class="filter-item">
+        <label>Marka</label>
+        <select id="brandFilter" onchange="filterCars()">
+          <option value="">Hamma</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label>Yili</label>
+        <select id="yearFilter" onchange="filterCars()">
+          <option value="">Hamma</option>
+        </select>
+      </div>
+      <div class="filter-item">
+        <label>Narxi ($)</label>
+        <input type="number" id="priceFilter" placeholder="Max" onchange="filterCars()">
+      </div>
+      <div class="filter-item">
+        <label>Turi</label>
+        <select id="typeFilter" onchange="filterCars()">
+          <option value="">Hamma</option>
+          <option value="Sedan">Sedan</option>
+          <option value="SUV">SUV</option>
+          <option value="Coupe">Coupe</option>
+          <option value="Hatchback">Hatchback</option>
+          <option value="Wagon">Wagon</option>
+          <option value="Minivan">Minivan</option>
+          <option value="Pickup">Pickup</option>
+          <option value="Crossover">Crossover</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="products-grid" id="productsGrid"></div>
+  </div>
+
+  <div class="cart-modal" id="cartModal">
+    <div class="cart-header">
+      <h2>🛒 Savat</h2>
+      <div class="close-cart" onclick="toggleCart()">✕</div>
+    </div>
+    <div class="cart-content" id="cartContent"></div>
+    <div class="cart-footer">
+      <div class="cart-total">
+        <span>Jami:</span>
+        <div class="cart-total-value" id="cartTotal">$0</div>
+      </div>
+      <button class="checkout-btn" onclick="checkout()">Buyurtma</button>
+    </div>
+  </div>
+
+  <div class="order-modal-overlay" id="orderOverlay" onclick="closeOrder()"></div>
+  <div class="order-modal" id="orderModal">
+    <div class="order-icon">✅</div>
+    <div class="order-title">Buyurtma Qabul!</div>
+    <div class="order-text">Rahmat, siz bilan ko'p vaqta asosiy xaridorimiz bo'lasiz!</div>
+    <div class="order-items" id="orderItems"></div>
+    <div class="order-price" id="orderPrice">$0</div>
+    <div class="order-text" style="font-size: 11px; color: #64748b;">Machina 3-5 kun ichida yetadi</div>
+    <button class="order-btn" onclick="closeOrder()">OK</button>
+  </div>
+
+  <script>
+    const REAL_CARS = [
+      // TESLA
+      { brand: 'Tesla', model: 'Model S', year: 2024, price: 89999, type: 'Sedan', engine: '500km', power: 'Electric' },
+      { brand: 'Tesla', model: 'Model 3', year: 2024, price: 55999, type: 'Sedan', engine: '400km', power: 'Electric' },
+      { brand: 'Tesla', model: 'Model X', year: 2023, price: 115999, type: 'SUV', engine: '450km', power: 'Electric' },
+      { brand: 'Tesla', model: 'Model Y', year: 2024, price: 75999, type: 'SUV', engine: '420km', power: 'Electric' },
+      { brand: 'Tesla', model: 'Roadster', year: 2024, price: 250000, type: 'Coupe', engine: '600km', power: 'Electric' },
+      { brand: 'Tesla', model: 'Cybertruck', year: 2024, price: 65000, type: 'Pickup', engine: '500km', power: 'Electric' },
+      
+      // BMW
+      { brand: 'BMW', model: '3 Series', year: 2024, price: 65000, type: 'Sedan', engine: '3.0L', power: '330 hp' },
+      { brand: 'BMW', model: '5 Series', year: 2023, price: 85000, type: 'Sedan', engine: '3.0L', power: '380 hp' },
+      { brand: 'BMW', model: '7 Series', year: 2024, price: 115000, type: 'Sedan', engine: '4.4L', power: '523 hp' },
+      { brand: 'BMW', model: 'M5', year: 2024, price: 120000, type: 'Sedan', engine: '4.4L', power: '625 hp' },
+      { brand: 'BMW', model: 'X1', year: 2024, price: 45000, type: 'SUV', engine: '2.0L', power: '228 hp' },
+      { brand: 'BMW', model: 'X3', year: 2023, price: 60000, type: 'SUV', engine: '3.0L', power: '382 hp' },
+      { brand: 'BMW', model: 'X5', year: 2024, price: 85000, type: 'SUV', engine: '4.4L', power: '523 hp' },
+      { brand: 'BMW', model: 'X7', year: 2024, price: 110000, type: 'SUV', engine: '4.4L', power: '523 hp' },
+      { brand: 'BMW', model: 'i8', year: 2022, price: 155000, type: 'Coupe', engine: 'Hybrid', power: '369 hp' },
+      { brand: 'BMW', model: 'M4', year: 2024, price: 105000, type: 'Coupe', engine: '3.0L', power: '503 hp' },
+      { brand: 'BMW', model: '2 Series', year: 2024, price: 50000, type: 'Coupe', engine: '2.0L', power: '255 hp' },
+      { brand: 'BMW', model: 'Z4', year: 2023, price: 70000, type: 'Coupe', engine: '3.0L', power: '382 hp' },
+
+      // MERCEDES-BENZ
+      { brand: 'Mercedes-Benz', model: 'A-Class', year: 2024, price: 40000, type: 'Sedan', engine: '2.0L', power: '188 hp' },
+      { brand: 'Mercedes-Benz', model: 'C-Class', year: 2024, price: 50000, type: 'Sedan', engine: '2.0L', power: '255 hp' },
+      { brand: 'Mercedes-Benz', model: 'E-Class', year: 2024, price: 95000, type: 'Sedan', engine: '2.0L', power: '362 hp' },
+      { brand: 'Mercedes-Benz', model: 'S-Class', year: 2023, price: 125000, type: 'Sedan', engine: '4.0L', power: '503 hp' },
+      { brand: 'Mercedes-Benz', model: 'GLA', year: 2024, price: 45000, type: 'SUV', engine: '2.0L', power: '188 hp' },
+      { brand: 'Mercedes-Benz', model: 'GLC', year: 2024, price: 65000, type: 'SUV', engine: '2.0L', power: '255 hp' },
+      { brand: 'Mercedes-Benz', model: 'GLE', year: 2024, price: 105000, type: 'SUV', engine: '3.0L', power: '435 hp' },
+      { brand: 'Mercedes-Benz', model: 'GLS', year: 2023, price: 125000, type: 'SUV', engine: '4.0L', power: '503 hp' },
+      { brand: 'Mercedes-Benz', model: 'AMG GT', year: 2023, price: 135000, type: 'Coupe', engine: '4.0L', power: '630 hp' },
+      { brand: 'Mercedes-Benz', model: 'CLA', year: 2024, price: 45000, type: 'Sedan', engine: '2.0L', power: '188 hp' },
+
+      // AUDI
+      { brand: 'Audi', model: 'A1', year: 2024, price: 35000, type: 'Hatchback', engine: '1.5L', power: '110 hp' },
+      { brand: 'Audi', model: 'A3', year: 2024, price: 42000, type: 'Sedan', engine: '1.5L', power: '150 hp' },
+      { brand: 'Audi', model: 'A4', year: 2024, price: 50000, type: 'Sedan', engine: '2.0L', power: '190 hp' },
+      { brand: 'Audi', model: 'A6', year: 2023, price: 75000, type: 'Sedan', engine: '2.9L', power: '335 hp' },
+      { brand: 'Audi', model: 'A8', year: 2024, price: 110000, type: 'Sedan', engine: '3.0L', power: '460 hp' },
+      { brand: 'Audi', model: 'RS6', year: 2023, price: 125000, type: 'Sedan', engine: '4.0L', power: '592 hp' },
+      { brand: 'Audi', model: 'Q2', year: 2024, price: 38000, type: 'SUV', engine: '1.5L', power: '150 hp' },
+      { brand: 'Audi', model: 'Q3', year: 2024, price: 48000, type: 'SUV', engine: '2.0L', power: '190 hp' },
+      { brand: 'Audi', model: 'Q5', year: 2024, price: 65000, type: 'SUV', engine: '2.9L', power: '335 hp' },
+      { brand: 'Audi', model: 'Q7', year: 2024, price: 95000, type: 'SUV', engine: '3.0L', power: '355 hp' },
+      { brand: 'Audi', model: 'Q8', year: 2023, price: 115000, type: 'SUV', engine: '4.0L', power: '503 hp' },
+      { brand: 'Audi', model: 'TT', year: 2024, price: 65000, type: 'Coupe', engine: '2.0L', power: '228 hp' },
+      { brand: 'Audi', model: 'R8', year: 2023, price: 185000, type: 'Coupe', engine: '5.2L', power: '562 hp' },
+
+      // PORSCHE
+      { brand: 'Porsche', model: '911', year: 2024, price: 125000, type: 'Coupe', engine: '3.0L', power: '379 hp' },
+      { brand: 'Porsche', model: '911 Turbo', year: 2024, price: 200000, type: 'Coupe', engine: '3.8L', power: '580 hp' },
+      { brand: 'Porsche', model: '911 GT3', year: 2024, price: 225000, type: 'Coupe', engine: '4.0L', power: '502 hp' },
+      { brand: 'Porsche', model: 'Cayman', year: 2024, price: 85000, type: 'Coupe', engine: '2.5L', power: '275 hp' },
+      { brand: 'Porsche', model: 'Boxster', year: 2023, price: 80000, type: 'Coupe', engine: '2.5L', power: '275 hp' },
+      { brand: 'Porsche', model: 'Panamera', year: 2024, price: 125000, type: 'Sedan', engine: '3.0L', power: '330 hp' },
+      { brand: 'Porsche', model: 'Taycan', year: 2024, price: 115000, type: 'Sedan', engine: 'Electric', power: '402 hp' },
+      { brand: 'Porsche', model: 'Cayenne', year: 2023, price: 130000, type: 'SUV', engine: '4.0L', power: '541 hp' },
+      { brand: 'Porsche', model: 'Macan', year: 2024, price: 75000, type: 'SUV', engine: '2.0L', power: '248 hp' },
+
+      // LAMBORGHINI
+      { brand: 'Lamborghini', model: 'Aventador', year: 2022, price: 280000, type: 'Coupe', engine: '6.5L', power: '740 hp' },
+      { brand: 'Lamborghini', model: 'Revuelto', year: 2024, price: 250000, type: 'Coupe', engine: 'Hybrid', power: '1001 hp' },
+      { brand: 'Lamborghini', model: 'Huracan', year: 2023, price: 220000, type: 'Coupe', engine: '5.2L', power: '630 hp' },
+      { brand: 'Lamborghini', model: 'Urus', year: 2024, price: 220000, type: 'SUV', engine: '4.0L', power: '641 hp' },
+      { brand: 'Lamborghini', model: 'LM002', year: 2022, price: 225000, type: 'SUV', engine: '5.7L', power: '580 hp' },
+
+      // FERRARI
+      { brand: 'Ferrari', model: 'F8 Tributo', year: 2023, price: 280000, type: 'Coupe', engine: '3.9L', power: '710 hp' },
+      { brand: 'Ferrari', model: '296 GTB', year: 2024, price: 250000, type: 'Coupe', engine: 'Hybrid', power: '819 hp' },
+      { brand: 'Ferrari', model: 'SF90', year: 2022, price: 375000, type: 'Coupe', engine: 'Hybrid', power: '986 hp' },
+      { brand: 'Ferrari', model: 'Roma', year: 2024, price: 200000, type: 'Coupe', engine: '3.9L', power: '612 hp' },
+      { brand: 'Ferrari', model: 'Purosangue', year: 2023, price: 300000, type: 'SUV', engine: '6.5L', power: '715 hp' },
+
+      // ROLLS-ROYCE
+      { brand: 'Rolls-Royce', model: 'Phantom', year: 2023, price: 450000, type: 'Sedan', engine: '6.7L', power: '563 hp' },
+      { brand: 'Rolls-Royce', model: 'Ghost', year: 2024, price: 350000, type: 'Sedan', engine: '6.7L', power: '563 hp' },
+      { brand: 'Rolls-Royce', model: 'Wraith', year: 2022, price: 350000, type: 'Coupe', engine: '6.6L', power: '624 hp' },
+      { brand: 'Rolls-Royce', model: 'Dawn', year: 2023, price: 400000, type: 'Coupe', engine: '6.6L', power: '624 hp' },
+      { brand: 'Rolls-Royce', model: 'Cullinan', year: 2024, price: 450000, type: 'SUV', engine: '6.7L', power: '563 hp' },
+
+      // BENTLEY
+      { brand: 'Bentley', model: 'Flying Spur', year: 2024, price: 250000, type: 'Sedan', engine: '6.0L', power: '635 hp' },
+      { brand: 'Bentley', model: 'Continental', year: 2023, price: 250000, type: 'Coupe', engine: '6.0L', power: '635 hp' },
+      { brand: 'Bentley', model: 'Bentayga', year: 2024, price: 200000, type: 'SUV', engine: '6.0L', power: '635 hp' },
+      { brand: 'Bentley', model: 'Mulsanne', year: 2020, price: 300000, type: 'Sedan', engine: '6.75L', power: '505 hp' },
+
+      // LAMBORGHINI ADDITIONAL
+      { brand: 'Lamborghini', model: 'Murcielago', year: 2021, price: 180000, type: 'Coupe', engine: '6.2L', power: '670 hp' },
+      { brand: 'Lamborghini', model: 'Diablo', year: 2019, price: 150000, type: 'Coupe', engine: '5.7L', power: '492 hp' },
+
+      // TOYOTA
+      { brand: 'Toyota', model: 'Corolla', year: 2024, price: 28000, type: 'Sedan', engine: '1.8L', power: '132 hp' },
+      { brand: 'Toyota', model: 'Camry', year: 2024, price: 38000, type: 'Sedan', engine: '2.5L', power: '203 hp' },
+      { brand: 'Toyota', model: 'RAV4', year: 2024, price: 35000, type: 'SUV', engine: '2.5L', power: '203 hp' },
+      { brand: 'Toyota', model: 'Highlander', year: 2023, price: 48000, type: 'SUV', engine: '3.5L', power: '295 hp' },
+      { brand: 'Toyota', model: 'Supra', year: 2024, price: 58000, type: 'Coupe', engine: '3.0L', power: '382 hp' },
+      { brand: 'Toyota', model: 'Land Cruiser', year: 2024, price: 85000, type: 'SUV', engine: '5.7L', power: '381 hp' },
+      { brand: 'Toyota', model: 'Prius', year: 2024, price: 32000, type: 'Sedan', engine: 'Hybrid', power: '121 hp' },
+      { brand: 'Toyota', model: '4Runner', year: 2023, price: 60000, type: 'SUV', engine: '4.0L', power: '270 hp' },
+      { brand: 'Toyota', model: 'Venza', year: 2024, price: 42000, type: 'Crossover', engine: 'Hybrid', power: '248 hp' },
+      { brand: 'Toyota', model: 'Sequoia', year: 2023, price: 58000, type: 'SUV', engine: '5.7L', power: '381 hp' },
+      { brand: 'Toyota', model: 'Tundra', year: 2024, price: 55000, type: 'Pickup', engine: '5.7L', power: '381 hp' },
+      { brand: 'Toyota', model: 'Tacoma', year: 2024, price: 38000, type: 'Pickup', engine: '3.5L', power: '278 hp' },
+      { brand: 'Toyota', model: 'Sienna', year: 2024, price: 42000, type: 'Minivan', engine: 'Hybrid', power: '245 hp' },
+
+      // HONDA
+      { brand: 'Honda', model: 'Civic', year: 2024, price: 28000, type: 'Sedan', engine: '1.5L', power: '174 hp' },
+      { brand: 'Honda', model: 'Accord', year: 2024, price: 35000, type: 'Sedan', engine: '1.5L', power: '192 hp' },
+      { brand: 'Honda', model: 'CR-V', year: 2024, price: 32000, type: 'SUV', engine: '1.5L', power: '190 hp' },
+      { brand: 'Honda', model: 'Pilot', year: 2023, price: 45000, type: 'SUV', engine: '3.5L', power: '280 hp' },
+      { brand: 'Honda', model: 'Odyssey', year: 2024, price: 38000, type: 'Minivan', engine: '3.5L', power: '280 hp' },
+      { brand: 'Honda', model: 'Ridgeline', year: 2024, price: 42000, type: 'Pickup', engine: '3.5L', power: '280 hp' },
+      { brand: 'Honda', model: 'NSX', year: 2022, price: 160000, type: 'Coupe', engine: 'Hybrid', power: '507 hp' },
+
+      // MAZDA
+      { brand: 'Mazda', model: 'Mazda3', year: 2024, price: 27000, type: 'Sedan', engine: '2.5L', power: '186 hp' },
+      { brand: 'Mazda', model: 'Mazda6', year: 2024, price: 32000, type: 'Sedan', engine: '2.5L', power: '187 hp' },
+      { brand: 'Mazda', model: 'CX-5', year: 2024, price: 32000, type: 'SUV', engine: '2.5L', power: '187 hp' },
+      { brand: 'Mazda', model: 'CX-9', year: 2023, price: 42000, type: 'SUV', engine: '2.5L', power: '227 hp' },
+      { brand: 'Mazda', model: 'MX-5 Miata', year: 2024, price: 28000, type: 'Coupe', engine: '2.0L', power: '181 hp' },
+
+      // FORD
+      { brand: 'Ford', model: 'Focus', year: 2024, price: 25000, type: 'Sedan', engine: '2.0L', power: '160 hp' },
+      { brand: 'Ford', model: 'Escape', year: 2024, price: 32000, type: 'SUV', engine: '1.5L', power: '181 hp' },
+      { brand: 'Ford', model: 'Edge', year: 2023, price: 40000, type: 'SUV', engine: '2.7L', power: '280 hp' },
+      { brand: 'Ford', model: 'Explorer', year: 2024, price: 42000, type: 'SUV', engine: '3.0L', power: '365 hp' },
+      { brand: 'Ford', model: 'F-150', year: 2024, price: 45000, type: 'Pickup', engine: '5.0L', power: '400 hp' },
+      { brand: 'Ford', model: 'Ranger', year: 2024, price: 32000, type: 'Pickup', engine: '2.3L', power: '280 hp' },
+      { brand: 'Ford', model: 'Mustang', year: 2024, price: 45000, type: 'Coupe', engine: '5.0L', power: '480 hp' },
+      { brand: 'Ford', model: 'Fusion', year: 2023, price: 28000, type: 'Sedan', engine: '1.5L', power: '181 hp' },
+
+      // CHEVROLET
+      { brand: 'Chevrolet', model: 'Malibu', year: 2024, price: 32000, type: 'Sedan', engine: '1.5L', power: '160 hp' },
+      { brand: 'Chevrolet', model: 'Equinox', year: 2024, price: 33000, type: 'SUV', engine: '1.5L', power: '170 hp' },
+      { brand: 'Chevrolet', model: 'Traverse', year: 2023, price: 42000, type: 'SUV', engine: '3.6L', power: '310 hp' },
+      { brand: 'Chevrolet', model: 'Silverado', year: 2024, price: 42000, type: 'Pickup', engine: '5.3L', power: '355 hp' },
+      { brand: 'Chevrolet', model: 'Colorado', year: 2024, price: 35000, type: 'Pickup', engine: '3.6L', power: '308 hp' },
+      { brand: 'Chevrolet', model: 'Corvette', year: 2024, price: 85000, type: 'Coupe', engine: '6.2L', power: '495 hp' },
+      { brand: 'Chevrolet', model: 'Blazer', year: 2024, price: 40000, type: 'SUV', engine: '3.6L', power: '308 hp' },
+
+      // DODGE
+      { brand: 'Dodge', model: 'Charger', year: 2024, price: 45000, type: 'Sedan', engine: '3.6L', power: '292 hp' },
+      { brand: 'Dodge', model: 'Challenger', year: 2023, price: 50000, type: 'Coupe', engine: '5.7L', power: '370 hp' },
+      { brand: 'Dodge', model: 'Durango', year: 2024, price: 48000, type: 'SUV', engine: '3.6L', power: '293 hp' },
+      { brand: 'Dodge', model: 'Ram', year: 2024, price: 48000, type: 'Pickup', engine: '5.7L', power: '395 hp' },
+      { brand: 'Dodge', model: 'Hornet', year: 2023, price: 32000, type: 'SUV', engine: '2.0L', power: '168 hp' },
+
+      // NISSAN
+      { brand: 'Nissan', model: 'Altima', year: 2024, price: 32000, type: 'Sedan', engine: '2.5L', power: '182 hp' },
+      { brand: 'Nissan', model: 'Rogue', year: 2024, price: 32000, type: 'SUV', engine: '2.5L', power: '181 hp' },
+      { brand: 'Nissan', model: 'Murano', year: 2023, price: 40000, type: 'SUV', engine: '3.5L', power: '260 hp' },
+      { brand: 'Nissan', model: 'Pathfinder', year: 2024, price: 42000, type: 'SUV', engine: '3.5L', power: '284 hp' },
+      { brand: 'Nissan', model: 'Frontier', year: 2024, price: 35000, type: 'Pickup', engine: '3.8L', power: '310 hp' },
+      { brand: 'Nissan', model: 'Titan', year: 2024, price: 42000, type: 'Pickup', engine: '5.6L', power: '400 hp' },
+      { brand: 'Nissan', model: '370Z', year: 2023, price: 38000, type: 'Coupe', engine: '3.7L', power: '332 hp' },
+      { brand: 'Nissan', model: 'GT-R', year: 2023, price: 115000, type: 'Coupe', engine: '3.8L', power: '565 hp' },
+
+      // SUBARU
+      { brand: 'Subaru', model: 'Impreza', year: 2024, price: 23000, type: 'Sedan', engine: '2.0L', power: '152 hp' },
+      { brand: 'Subaru', model: 'Outback', year: 2024, price: 30000, type: 'Wagon', engine: '2.5L', power: '182 hp' },
+      { brand: 'Subaru', model: 'Crosstrek', year: 2024, price: 28000, type: 'SUV', engine: '2.0L', power: '152 hp' },
+      { brand: 'Subaru', model: 'Forester', year: 2024, price: 32000, type: 'SUV', engine: '2.5L', power: '182 hp' },
+      { brand: 'Subaru', model: 'Ascent', year: 2023, price: 42000, type: 'SUV', engine: '2.4L', power: '260 hp' },
+      { brand: 'Subaru', model: 'BRZ', year: 2024, price: 30000, type: 'Coupe', engine: '2.4L', power: '228 hp' },
+
+      // HYUNDAI
+      { brand: 'Hyundai', model: 'Elantra', year: 2024, price: 23000, type: 'Sedan', engine: '2.0L', power: '147 hp' },
+      { brand: 'Hyundai', model: 'Sonata', year: 2024, price: 32000, type: 'Sedan', engine: '2.5L', power: '191 hp' },
+      { brand: 'Hyundai', model: 'Tucson', year: 2024, price: 32000, type: 'SUV', engine: '2.5L', power: '187 hp' },
+      { brand: 'Hyundai', model: 'Santa Fe', year: 2023, price: 42000, type: 'SUV', engine: '3.8L', power: '295 hp' },
+      { brand: 'Hyundai', model: 'Palisade', year: 2024, price: 45000, type: 'SUV', engine: '3.8L', power: '295 hp' },
+      { brand: 'Hyundai', model: 'Ioniq', year: 2024, price: 33000, type: 'Sedan', engine: 'Hybrid', power: '139 hp' },
+      { brand: 'Hyundai', model: 'Kona', year: 2024, price: 28000, type: 'SUV', engine: '2.0L', power: '147 hp' },
+      { brand: 'Hyundai', model: 'Venue', year: 2024, price: 19000, type: 'SUV', engine: '1.2L', power: '84 hp' },
+      { brand: 'Hyundai', model: 'i30', year: 2024, price: 25000, type: 'Hatchback', engine: '1.6L', power: '120 hp' },
+
+      // KIA
+      { brand: 'Kia', model: 'Forte', year: 2024, price: 22000, type: 'Sedan', engine: '2.0L', power: '147 hp' },
+      { brand: 'Kia', model: 'Sportage', year: 2024, price: 32000, type: 'SUV', engine: '2.5L', power: '181 hp' },
+      { brand: 'Kia', model: 'Sorento', year: 2023, price: 40000, type: 'SUV', engine: '3.3L', power: '290 hp' },
+      { brand: 'Kia', model: 'Telluride', year: 2024, price: 45000, type: 'SUV', engine: '3.8L', power: '295 hp' },
+      { brand: 'Kia', model: 'Niro', year: 2024, price: 33000, type: 'SUV', engine: 'Hybrid', power: '139 hp' },
+      { brand: 'Kia', model: 'EV9', year: 2024, price: 55000, type: 'SUV', engine: 'Electric', power: '314 hp' },
+      { brand: 'Kia', model: 'Rio', year: 2024, price: 19000, type: 'Sedan', engine: '1.6L', power: '120 hp' },
+      { brand: 'Kia', model: 'Optima', year: 2023, price: 33000, type: 'Sedan', engine: '2.4L', power: '181 hp' },
+
+      // VOLVO
+      { brand: 'Volvo', model: 'S60', year: 2024, price: 55000, type: 'Sedan', engine: '2.0L', power: '250 hp' },
+      { brand: 'Volvo', model: 'S90', year: 2023, price: 75000, type: 'Sedan', engine: '2.0L', power: '316 hp' },
+      { brand: 'Volvo', model: 'XC40', year: 2024, price: 48000, type: 'SUV', engine: '2.0L', power: '258 hp' },
+      { brand: 'Volvo', model: 'XC60', year: 2024, price: 60000, type: 'SUV', engine: '2.0L', power: '316 hp' },
+      { brand: 'Volvo', model: 'XC90', year: 2023, price: 75000, type: 'SUV', engine: '2.0L', power: '316 hp' },
+    ];
+
+    let allCars = [...REAL_CARS];
+    
+    // Qo'shimcha random mashinalari qo'shamiz 500 gacha
+    let carId = REAL_CARS.length + 1;
+    const extraBrands = ['Jaguar', 'Land Rover', 'Lexus', 'Infiniti', 'Acura', 'Genesis', 'Polestar', 'Rivian', 'Lucid', 'Fisker'];
+    const extraModels = ['Pro', 'Max', 'Ultra', 'Premium', 'Deluxe', 'Executive', 'Sport', 'Turbo', 'Elite', 'Vision'];
+    const types = ['Sedan', 'SUV', 'Coupe', 'Hatchback', 'Wagon', 'Minivan', 'Pickup', 'Crossover'];
+    const engines = ['2.0L', '2.5L', '3.0L', '3.5L', '5.0L', '6.0L', 'Hybrid', 'Electric', '4.0L', '3.6L'];
+    const powers = ['120 hp', '180 hp', '250 hp', '300 hp', '400 hp', '500 hp', '600 hp', '200 hp', '150 hp', '350 hp'];
+    const rangeKm = ['300km', '350km', '400km', '450km', '500km', '550km', '600km', '250km'];
+
+    while (allCars.length < 500) {
+      const brand = extraBrands[Math.floor(Math.random() * extraBrands.length)];
+      const model = extraModels[Math.floor(Math.random() * extraModels.length)];
+      const year = Math.floor(Math.random() * 5) + 2020;
+      const price = Math.floor(Math.random() * 400000) + 20000;
+      const type = types[Math.floor(Math.random() * types.length)];
+      const engine = engines[Math.floor(Math.random() * engines.length)];
+      const power = powers[Math.floor(Math.random() * powers.length)];
+
+      allCars.push({
+        brand,
+        model,
+        year,
+        price,
+        type,
+        engine,
+        power
+      });
+    }
+
+    let cart = [];
+    let filteredCars = [...allCars];
+    let quantities = {};
+    allCars.forEach((car, i) => quantities[i] = 1);
+
+    function renderProducts() {
+      const grid = document.getElementById('productsGrid');
+      if (filteredCars.length === 0) {
+        grid.innerHTML = '<div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #64748b;">❌ Mashina topilmadi</div>';
+        return;
+      }
+      grid.innerHTML = filteredCars.map((car, idx) => `
+        <div class="product-card">
+          <div class="product-image">
+            🚗
+            <span class="product-badge">${car.year}</span>
+          </div>
+          <div class="product-body">
+            <div class="product-brand">${car.brand}</div>
+            <div class="product-name">${car.model}</div>
+            <div class="product-details">${car.type} | ${car.engine}</div>
+            <div class="product-specs">
+              <span class="spec-tag">${car.power}</span>
+              <span class="spec-tag">${car.engine}</span>
+            </div>
+            <div class="product-price">$${car.price.toLocaleString()}</div>
+            <div class="product-controls">
+              <div class="qty-control">
+                <button class="qty-btn" onclick="decreaseQty(${idx})">−</button>
+                <div class="qty-display" id="qty-${idx}">1</div>
+                <button class="qty-btn" onclick="increaseQty(${idx})">+</button>
+              </div>
+              <button class="add-btn" onclick="addToCart(${idx})">Savat</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function increaseQty(idx) { quantities[idx]++; document.getElementById(`qty-${idx}`).textContent = quantities[idx]; }
+    function decreaseQty(idx) { if (quantities[idx] > 1) quantities[idx]--; document.getElementById(`qty-${idx}`).textContent = quantities[idx]; }
+
+    function addToCart(idx) {
+      const car = filteredCars[idx];
+      const qty = quantities[idx];
+      const existing = cart.find(item => item.brand === car.brand && item.model === car.model);
+      
+      if (existing) {
+        existing.quantity += qty;
+      } else {
+        cart.push({...car, quantity: qty});
+      }
+      
+      updateCart();
+      quantities[idx] = 1;
+      document.getElementById(`qty-${idx}`).textContent = 1;
+    }
+
+    function updateCart() {
+      document.getElementById('cartCount').textContent = cart.length;
+      const cartContent = document.getElementById('cartContent');
+      
+      if (cart.length === 0) {
+        cartContent.innerHTML = '<div class="empty-cart"><div class="empty-cart-icon">🛒</div><p>Savat bo\'sh</p></div>';
+        return;
+      }
+      
+      cartContent.innerHTML = cart.map(item => `
+        <div class="cart-item">
+          <div class="cart-item-info">
+            <div class="cart-item-name">${item.brand} ${item.model}</div>
+            <div class="cart-item-detail">${item.year} | ${item.type}</div>
+            <div class="cart-item-price">$${item.price.toLocaleString()} × ${item.quantity}</div>
+          </div>
+          <button class="cart-item-remove" onclick="removeFromCart('${item.brand}','${item.model}')">❌</button>
+        </div>
+      `).join('');
+      
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      document.getElementById('cartTotal').textContent = '$' + total.toLocaleString();
+    }
+
+    function removeFromCart(brand, model) {
+      cart = cart.filter(item => !(item.brand === brand && item.model === model));
+      updateCart();
+    }
+
+    function toggleCart() {
+      document.getElementById('cartModal').classList.toggle('active');
+    }
+
+    function checkout() {
+      if (cart.length === 0) {
+        alert('❌ Savat bo\'sh!');
+        return;
+      }
+      
+      const total = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+      document.getElementById('orderItems').innerHTML = cart.map((item, i) => `
+        <div class="order-item-line">
+          <span>${i+1}. ${item.brand} ${item.model}</span>
+          <span>$${(item.price * item.quantity).toLocaleString()}</span>
+        </div>
+      `).join('');
+      
+      document.getElementById('orderPrice').textContent = '$' + total.toLocaleString();
+      document.getElementById('orderOverlay').classList.add('show');
+      document.getElementById('orderModal').classList.add('show');
+      
+      setTimeout(() => {
+        cart = [];
+        updateCart();
+        toggleCart();
+      }, 3000);
+    }
+
+    function closeOrder() {
+      document.getElementById('orderModal').classList.remove('show');
+      document.getElementById('orderOverlay').classList.remove('show');
+    }
+
+    function filterCars() {
+      const brand = document.getElementById('brandFilter').value;
+      const year = document.getElementById('yearFilter').value;
+      const price = parseInt(document.getElementById('priceFilter').value) || Infinity;
+      const type = document.getElementById('typeFilter').value;
+      
+      filteredCars = allCars.filter(car =>
+        (!brand || car.brand === brand) &&
+        (!year || car.year == year) &&
+        car.price <= price &&
+        (!type || car.type === type)
+      );
+      
+      renderProducts();
+    }
+
+    function searchCars() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      filteredCars = allCars.filter(car =>
+        car.brand.toLowerCase().includes(query) ||
+        car.model.toLowerCase().includes(query)
+      );
+      renderProducts();
+    }
+
+    // Filterlarni to'ldirish
+    const brands = [...new Set(allCars.map(c => c.brand))].sort();
+    document.getElementById('brandFilter').innerHTML += brands.map(b => `<option value="${b}">${b}</option>`).join('');
+    
+    const years = [...new Set(allCars.map(c => c.year))].sort().reverse();
+    document.getElementById('yearFilter').innerHTML += years.map(y => `<option value="${y}">${y}</option>`).join('');
+
+    renderProducts();
+  </script>
+</body>
+</html>
